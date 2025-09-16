@@ -1,9 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import "../styles/addtask.css"
 import { useState } from "react";
 export default function AddTask() {
 
     const [taskData, setTaskData] = useState();
-
+    const navigate = useNavigate();
     const handleAddTask = async (req, res) => {
         console.log(taskData)
 
@@ -17,7 +18,8 @@ export default function AddTask() {
         let result = await data.json();
 
         if (result.success) {
-            alert(result.message); // show popup alert
+            alert(result.message);
+            navigate("/");
             console.log(result.message);
         }
     }
