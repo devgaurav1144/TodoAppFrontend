@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import '../styles/list.css'
+import { useNavigate } from "react-router-dom";
 
 export default function ListTask() {
 
     const [listData, setListData] = useState([]);
-
+    const navigate = useNavigate();
     useEffect(() => {
         getAllTaskList()
     }, [])
@@ -18,6 +19,17 @@ export default function ListTask() {
         }
     }
 
+    const deleteTask = async (id) => {
+        let item = await fetch("http://localhost:8989/delete/" + id, { method: "delete" })
+        item = await item.json();
+        if (item.success) {
+            console.log(item.success);
+            alert("Item Deleted Successfully");
+            getAllTaskList();
+            navigate("/");
+        }
+    }
+
     return (
         <div className="main-div">
             <h1 className="header-text">Task list View</h1>
@@ -25,13 +37,15 @@ export default function ListTask() {
                 <li className="list-header">S.No</li>
                 <li className="list-header">Task</li>
                 <li className="list-header">Description</li>
+                <li className="list-header">Action</li>
                 {
                     listData && listData.map((item, index) => (
-                        <>
+                        <Fragment key={item._id}>
                             <li className="list-item">{index + 1}</li>
                             <li className="list-item">{item.title}</li>
                             <li className="list-item">{item.description}</li>
-                        </>
+                            <li className="list-item"><button className="delete-item" onClick={() => deleteTask(item._id)}>Delete</button></li>
+                        </Fragment>
                     ))
                 }
             </ul>
