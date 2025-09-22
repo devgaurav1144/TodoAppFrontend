@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react"
 import '../styles/list.css'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ListTask() {
 
@@ -44,7 +44,10 @@ export default function ListTask() {
                             <li className="list-item">{index + 1}</li>
                             <li className="list-item">{item.title}</li>
                             <li className="list-item">{item.description}</li>
-                            <li className="list-item"><button className="delete-item" onClick={() => deleteTask(item._id)}>Delete</button></li>
+                            <li className="list-item">
+                                <button className="delete-item" onClick={() => deleteTask(item._id)}>Delete</button>
+                                <Link to={"update/"+item._id} className="update-item">Update</Link>                            
+                                </li>                      
                         </Fragment>
                     ))
                 }

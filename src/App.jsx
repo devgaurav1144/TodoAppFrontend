@@ -3,6 +3,7 @@ import './App.css'
 import Navbar from './components/Navbar'
 import AddTask from './components/AddTask'
 import ListTask from './components/ListTask'
+import UpdateTask from './components/UpdateTask'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
      <Routes>
       <Route path='/' element={<ListTask/>}></Route>
       <Route path='/add' element={<AddTask/>}></Route>
+      <Route path='/update/:id' element={<UpdateTask/>}></Route>
      </Routes>
     </>
   )
