@@ -3,8 +3,8 @@ import '../styles/list.css'
 import { Link, useNavigate } from "react-router-dom";
 
 export default function ListTask() {
-
     const [listData, setListData] = useState([]);
+    const [selectTask, setSelectTask] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
         getAllTaskList()
@@ -30,10 +30,29 @@ export default function ListTask() {
         }
     }
 
+    const selectAll = (event) => {
+        if (event.target.checked) {
+            let itemId = listData.map((item) => item._id);
+            setSelectTask(itemId);
+        } else {
+            setSelectTask([]);
+        }
+    }
+
+    const singleItemSelect = (id) => {
+        if (selectTask.includes(id)) {
+            let items = selectTask.filter((item) => item != id)
+            setSelectTask(items)
+        } else {
+            setSelectTask([id, ...selectTask])
+        }
+    }
+
     return (
         <div className="main-div">
             <h1 className="header-text">Task list View</h1>
             <ul className="task-list">
+                <li className="list-header"><input type="checkbox" onChange={selectAll} /></li>
                 <li className="list-header">S.No</li>
                 <li className="list-header">Task</li>
                 <li className="list-header">Description</li>
@@ -41,13 +60,14 @@ export default function ListTask() {
                 {
                     listData && listData.map((item, index) => (
                         <Fragment key={item._id}>
+                            <li className="list-item"><input onChange={() => singleItemSelect(item._id)} checked={selectTask.includes(item._id)} type="checkbox" /></li>
                             <li className="list-item">{index + 1}</li>
                             <li className="list-item">{item.title}</li>
                             <li className="list-item">{item.description}</li>
                             <li className="list-item">
                                 <button className="delete-item" onClick={() => deleteTask(item._id)}>Delete</button>
-                                <Link to={"update/"+item._id} className="update-item">Update</Link>                            
-                                </li>                      
+                                <Link to={"update/" + item._id} className="update-item">Update</Link>
+                            </li>
                         </Fragment>
                     ))
                 }
