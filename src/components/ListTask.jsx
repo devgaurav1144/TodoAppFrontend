@@ -19,6 +19,28 @@ export default function ListTask() {
         }
     }
 
+    const deletemultiple = async () => {
+        console.log(selectTask);
+        let item = await fetch("http://localhost:8989/delete-multiple/",
+            {
+                method: "delete",
+                body: JSON.stringify(selectTask),
+                headers: {
+                    'Content-Type': 'Application/Json'
+                }
+
+            })
+        item = await item.json();
+        if (item.success) {
+            document.getElementById('selectAll').checked = false;
+            console.log(item.success);
+            alert("Item Deleted Successfully");
+            
+            getAllTaskList();
+            navigate("/");
+        }
+    }
+
     const deleteTask = async (id) => {
         let item = await fetch("http://localhost:8989/delete/" + id, { method: "delete" })
         item = await item.json();
@@ -50,9 +72,11 @@ export default function ListTask() {
 
     return (
         <div className="main-div">
+
             <h1 className="header-text">Task list View</h1>
+            <button type="button" className="delete-item delete-multiple" onClick={deletemultiple}>Delete</button>
             <ul className="task-list">
-                <li className="list-header"><input type="checkbox" onChange={selectAll} /></li>
+                <li className="list-header"><input type="checkbox" id="selectAll" onChange={selectAll} /></li>
                 <li className="list-header">S.No</li>
                 <li className="list-header">Task</li>
                 <li className="list-header">Description</li>
